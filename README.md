@@ -2,91 +2,13 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Developed by: Cisco](https://img.shields.io/badge/Developed%20by-Cisco-blue)](https://developer.cisco.com)
 
-# Terraform Intersight Profiles - Domain
-Manages Intersight Domain Profiles
+# Terraform Intersight Domain Profiles Module
 
-Location in GUI:
-`Profiles` » `Create Profile` » `Domain`
+A Terraform module to configure Intersight Domain Profiles.
 
-## Easy IMM
+This module is part of the Cisco [*Intersight as Code*](https://cisco.com/go/intersightascode) project. Its goal is to allow users to instantiate network fabrics in minutes using an easy to use, opinionated data model. It takes away the complexity of having to deal with references, dependencies or loops. By completely separating data (defining variables) from logic (infrastructure declaration), it allows the user to focus on describing the intended configuration while using a set of maintained and tested Terraform Modules without the need to understand the low-level Intersight object model.
 
-[*Easy IMM - Comprehensive Example*](https://github.com/terraform-cisco-modules/easy-imm-comprehensive-example) - A comprehensive example for policies, pools, and profiles.
-
-## Example
-
-### main.tf
-```hcl
-module "domain_profile" {
-  source  = "terraform-cisco-modules/profiles-domain/intersight"
-  version = ">= 1.0.1"
-
-  action       = "No-op"
-  description  = "default Domain Profile"
-  name         = "default"
-  organization = "default"
-}
-
-```
-
-### provider.tf
-```hcl
-terraform {
-  required_providers {
-    intersight = {
-      source  = "CiscoDevNet/intersight"
-      version = ">=1.0.32"
-    }
-  }
-  required_version = ">=1.3.0"
-}
-
-provider "intersight" {
-  apikey    = var.apikey
-  endpoint  = var.endpoint
-  secretkey = fileexists(var.secretkeyfile) ? file(var.secretkeyfile) : var.secretkey
-}
-```
-
-### variables.tf
-```hcl
-variable "apikey" {
-  description = "Intersight API Key."
-  sensitive   = true
-  type        = string
-}
-
-variable "endpoint" {
-  default     = "https://intersight.com"
-  description = "Intersight URL."
-  type        = string
-}
-
-variable "secretkey" {
-  default     = ""
-  description = "Intersight Secret Key Content."
-  sensitive   = true
-  type        = string
-}
-
-variable "secretkeyfile" {
-  default     = "blah.txt"
-  description = "Intersight Secret Key File Location."
-  sensitive   = true
-  type        = string
-}
-```
-
-## Environment Variables
-
-### Terraform Cloud/Enterprise - Workspace Variables
-- Add variable apikey with the value of [your-api-key]
-- Add variable secretkey with the value of [your-secret-file-content]
-
-### Linux and Windows
-```bash
-export TF_VAR_apikey="<your-api-key>"
-export TF_VAR_secretkeyfile="<secret-key-file-location>"
-```
+A comprehensive example using this module is available here: https://github.com/terraform-cisco-modules/iac-intersight-comprehensive-example
 
 ## Requirements
 
@@ -103,23 +25,17 @@ export TF_VAR_secretkeyfile="<secret-key-file-location>"
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_apikey"></a> [apikey](#input\_apikey) | Intersight API Key. | `string` | n/a | yes |
-| <a name="input_endpoint"></a> [endpoint](#input\_endpoint) | Intersight URL. | `string` | `"https://intersight.com"` | no |
-| <a name="input_secretkey"></a> [secretkey](#input\_secretkey) | Intersight Secret Key. | `string` | n/a | yes |
-| <a name="input_action"></a> [action](#input\_action) | Action to Perform on the Switch Profile Assignment.  Options are {Deploy\|No-op\|Unassign}. | `string` | `"No-op"` | no |
-| <a name="input_description"></a> [description](#input\_description) | Description for the Policy. | `string` | `""` | no |
-| <a name="input_domain_template"></a> [domain\_template](#input\_domain\_template) | NOT SUPPORTED TODAY.  The Name of the Domain Template to Assign. | `string` | `""` | no |
-| <a name="input_domain_type"></a> [domain\_type](#input\_domain\_type) | Defines the type of the profile. Accepted values are:<br>* instance<br>* template | `string` | `"instance"` | no |
-| <a name="input_name"></a> [name](#input\_name) | Name for the Policy. | `string` | `"default"` | no |
-| <a name="input_organization"></a> [organization](#input\_organization) | Intersight Organization Name to Apply Policy to.  https://intersight.com/an/settings/organizations/. | `string` | `"default"` | no |
-| <a name="input_policy_bucket"></a> [policy\_bucket](#input\_policy\_bucket) | List of Policies to Assign to the Profile. | `list(map(string))` | `[]` | no |
-| <a name="input_serial_numbers"></a> [serial\_numbers](#input\_serial\_numbers) | List of Serial Numbers for the Domain Profile.  Be sure to put the Serial Numbers in Order for A versus B. | `list(string)` | `[]` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | List of Tag Attributes to Assign to the Policy. | `list(map(string))` | `[]` | no |
+| <a name="input_model"></a> [model](#input\_model) | Model data. | `any` | n/a | yes |
+| <a name="input_moids"></a> [moids](#input\_moids) | Flag to Determine if Policies Should be associated using data object or resource. | `bool` | `false` | no |
+| <a name="input_organization"></a> [organization](#input\_organization) | Name of the default intersight Organization. | `string` | `"default"` | no |
+| <a name="input_pools"></a> [pools](#input\_pools) | Pools Moids. | `any` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | List of Key/Value Pairs to Assign as Attributes to the Policy. | `list(map(string))` | `[]` | no |
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_domain_profile"></a> [domain\_profile](#output\_domain\_profile) | UCS Domain Cluster Profile Managed Object ID (moid). |
+| <a name="output_domains"></a> [domains](#output\_domains) | n/a |
+| <a name="output_switch_profiles"></a> [switch\_profiles](#output\_switch\_profiles) | n/a |
 ## Resources
 
 | Name | Type |
@@ -127,5 +43,5 @@ export TF_VAR_secretkeyfile="<secret-key-file-location>"
 | [intersight_fabric_switch_cluster_profile.domain_profile](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_switch_cluster_profile) | resource |
 | [intersight_fabric_switch_profile.switch_profiles](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_switch_profile) | resource |
 | [intersight_network_element_summary.fis](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/data-sources/network_element_summary) | data source |
-| [intersight_organization_organization.org_moid](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/data-sources/organization_organization) | data source |
+| [intersight_organization_organization.orgs](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/data-sources/organization_organization) | data source |
 <!-- END_TF_DOCS -->
