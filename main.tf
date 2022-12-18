@@ -43,7 +43,6 @@ resource "intersight_fabric_switch_profile" "switch_profiles" {
     intersight_fabric_switch_cluster_profile.domain_profile
   ]
   for_each    = local.switch_profiles
-  action      = each.value.action
   description = lookup(each.value, "description", "${each.value.name} Switch Profile.")
   name        = each.value.name
   type        = "instance"

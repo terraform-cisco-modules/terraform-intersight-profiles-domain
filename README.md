@@ -20,7 +20,7 @@ A comprehensive example using this module is available here: https://github.com/
 
 | Name | Version |
 |------|---------|
-| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | 1.0.32 |
+| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | >=1.0.32 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -35,7 +35,7 @@ A comprehensive example using this module is available here: https://github.com/
 | Name | Description |
 |------|-------------|
 | <a name="output_domains"></a> [domains](#output\_domains) | n/a |
-| <a name="output_switch_profiles"></a> [switch\_profiles](#output\_switch\_profiles) | n/a |
+| <a name="output_depoy_switch_profiles"></a> [depoy\_switch\_profiles](#output\_depoy\_switch\_profiles) | n/a |
 ## Resources
 
 | Name | Type |

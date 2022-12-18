@@ -24,10 +24,11 @@ output "domains" {
 #  }
 #}
 
-output "switch_profiles" {
+output "depoy_switch_profiles" {
   value = {
     for v in sort(keys(intersight_fabric_switch_profile.switch_profiles)
-      ) : v => intersight_fabric_switch_profile.switch_profiles[v
-    ].moid if local.switch_profiles[v].serial_number != "unknown"
+      ) : v => intersight_fabric_switch_profile.switch_profiles[v].moid if length(regexall(
+      "^([A-Z]{3}[2-3][\\d]([0][1-9]|[1-4][0-9]|[5][1-3])[\\dA-Z]{4}$", local.switch_profiles[v].serial_number)
+    ) > 0 && local.switch_profiles[v].action == "Deploy"
   }
 }
