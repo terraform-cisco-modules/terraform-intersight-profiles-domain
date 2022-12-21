@@ -46,6 +46,14 @@ resource "intersight_fabric_switch_profile" "switch_profiles" {
   description = lookup(each.value, "description", "${each.value.name} Switch Profile.")
   name        = each.value.name
   type        = "instance"
+  lifecycle {
+    ignore_changes = [
+      action,
+      additional_properties,
+      mod_time,
+      wait_for_completion
+    ]
+  }
   switch_cluster_profile {
     moid = intersight_fabric_switch_cluster_profile.domain_profile[each.value.domain_profile].moid
   }
