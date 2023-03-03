@@ -4,10 +4,6 @@
 #____________________________________________________________
 
 data "intersight_organization_organization" "orgs" {
-  for_each = {
-    for v in local.organizations : v => v if var.moids == false
-  }
-  name = each.value
 }
 
 #data "intersight_networkconfig_policy" "network_connectivity" {

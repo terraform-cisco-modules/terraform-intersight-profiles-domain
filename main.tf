@@ -16,9 +16,7 @@ resource "intersight_fabric_switch_cluster_profile" "domain_profile" {
   name        = each.value.name
   type        = "instance"
   organization {
-    moid = length(regexall(true, var.moids)
-      ) > 0 ? local.orgs[each.value.organization
-    ] : data.intersight_organization_organization.orgs[each.value.organization].results[0].moid
+    moid        = local.orgs[each.value.organization]
     object_type = "organization.Organization"
   }
   dynamic "tags" {

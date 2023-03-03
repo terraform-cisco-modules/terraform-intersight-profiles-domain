@@ -1,16 +1,9 @@
 locals {
-  defaults    = lookup(var.model, "defaults", {})
-  intersight  = lookup(var.model, "intersight", {})
-  ldomain     = local.defaults.intersight.profiles.domain
-  name_prefix = local.defaults.intersight.profiles.name_prefix
-  orgs        = var.moids == true ? var.pools.orgs : {}
-  organizations = distinct(compact(concat(
-    [for i in lookup(local.profiles, "domain", []) : lookup(i, "organization", var.organization)]
-  )))
+  defaults    = var.defaults.domain
+  name_prefix = var.defaults.name_prefix
+  orgs        = { for k, v in data.intersight_organization_organization.orgs.results : v.name => v.moid }
+  profiles    = var.profiles
   #policies       = var.policies
-  policies_model = lookup(local.intersight, "policies", {})
-  pools          = var.pools
-  profiles       = lookup(local.intersight, "profiles", {})
   #data_policies = var.moids == false ? {
   #  network_connectivity = distinct(compact(concat(
   #    [for i in lookup(local.profiles, "domain", []) : lookup(i, "network_connectivity_policy", "")]
@@ -43,9 +36,9 @@ locals {
 
   domain = flatten([
     for v in lookup(local.profiles, "domain", []) : {
-      action               = lookup(v, "action", local.ldomain.action)
+      action               = lookup(v, "action", local.defaults.action)
       description          = lookup(v, "description", "")
-      name                 = "${local.name_prefix}${v.name}${local.ldomain.name_suffix}"
+      name                 = "${local.name_prefix}${v.name}${local.defaults.name_suffix}"
       network_connectivity = lookup(v, "network_connectivity_policy", "")
       network_connectivity_policy = length(compact([lookup(v, "network_connectivity_policy", "")])) > 0 ? {
         name        = v.network_connectivity_policy

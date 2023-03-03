@@ -1,10 +1,15 @@
 #__________________________________________________________________
 #
-# Model Data and policy from domains and pools
+# Model Data for Domain Profiles and Assigned Policies
 #__________________________________________________________________
 
-variable "model" {
-  description = "Model data."
+variable "defaults" {
+  description = "Map of Defaults for Intersight Profiles."
+  type        = any
+}
+
+variable "profiles" {
+  description = "Profiles - YAML to HCL data."
   type        = any
 }
 
@@ -24,11 +29,6 @@ variable "organization" {
 #  description = "Policies Moids."
 #  type        = any
 #}
-
-variable "pools" {
-  description = "Pools Moids."
-  type        = any
-}
 
 variable "tags" {
   default     = []
