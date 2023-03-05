@@ -3,68 +3,66 @@
 # Moid Data Source
 #____________________________________________________________
 
-data "intersight_organization_organization" "orgs" {
-}
-
-#data "intersight_networkconfig_policy" "network_connectivity" {
-#  for_each = {
-#    for v in local.data_policies : v.name => v if var.moids == false && v.object_type == "networkconfig.Policy"
-#  }
-#  name = each.value.name
+#data "intersight_search_search_item" "network_connectivity" {
+#  for_each = { for v in [0] : v => v if length(local.network_connectivity) > 0 }
+#  additional_properties = jsonencode({ "ClassId" = "networkconfig.Policy' and Name in ('${
+#    trim(join("', '", local.network_connectivity), ", '")}') and ObjectType eq 'networkconfig.Policy"
+#  })
 #}
 #
-#data "intersight_ntp_policy" "ntp" {
-#  for_each = {
-#    for v in local.data_policies : v.name => v if var.moids == false && v.object_type == "ntp.Policy"
-#  }
-#  name = each.value.name
+#data "intersight_search_search_item" "ntp" {
+#  for_each = { for v in [0] : v => v if length(local.ntp) > 0 }
+#  additional_properties = jsonencode({ "ClassId" = "ntp.Policy' and Name in ('${
+#    trim(join("', '", local.ntp), ", '")}') and ObjectType eq 'ntp.Policy"
+#  })
 #}
 #
-#data "intersight_fabric_port_policy" "port" {
-#  for_each = {
-#    for v in local.data_policies : v.name => v if var.moids == false && v.object_type == "fabric.PortPolicy"
-#  }
-#  name = each.value.name
+#data "intersight_search_search_item" "port" {
+#  for_each = { for v in [0] : v => v if length(local.port) > 0 }
+#  additional_properties = jsonencode({ "ClassId" = "fabric.PortPolicy' and Name in ('${
+#    trim(join("', '", local.port), ", '")}') and ObjectType eq 'fabric.PortPolicy"
+#  })
 #}
 #
-#data "intersight_snmp_policy" "snmp" {
-#  for_each = {
-#    for v in local.data_policies : v.name => v if var.moids == false && v.object_type == "snmp.Policy"
-#  }
-#  name = each.value.name
+#data "intersight_search_search_item" "snmp" {
+#  for_each = { for v in [0] : v => v if length(local.snmp) > 0 }
+#  additional_properties = jsonencode({ "ClassId" = "snmp.Policy' and Name in ('${
+#    trim(join("', '", local.snmp), ", '")}') and ObjectType eq 'snmp.Policy"
+#  })
 #}
 #
-#data "intersight_fabric_switch_control_policy" "switch_control" {
-#  for_each = {
-#    for v in local.data_policies : v.name => v if var.moids == false && v.object_type == "fabric.SwitchControlPolicy"
-#  }
-#  name = each.value.name
+#data "intersight_search_search_item" "switch_control" {
+#  for_each = { for v in [0] : v => v if length(local.switch_control) > 0 }
+#  additional_properties = jsonencode({ "ClassId" = "fabric.SwitchControlPolicy' and Name in ('${
+#    trim(join("', '", local.switch_control), ", '")}') and ObjectType eq 'fabric.SwitchControlPolicy"
+#  })
 #}
 #
-#data "intersight_syslog_policy" "syslog" {
-#  for_each = {
-#    for v in local.data_policies : v.name => v if var.moids == false && v.object_type == "syslog.Policy"
-#  }
-#  name = each.value.name
+#data "intersight_search_search_item" "syslog" {
+#  for_each = { for v in [0] : v => v if length(local.syslog) > 0 }
+#  additional_properties = jsonencode({ "ClassId" = "syslog.Policy' and Name in ('${
+#    trim(join("', '", local.syslog), ", '")}') and ObjectType eq 'syslog.Policy"
+#  })
 #}
 #
-#data "intersight_fabric_system_qos_policy" "system_qos" {
-#  for_each = {
-#    for v in local.data_policies : v.name => v if var.moids == false && v.object_type == "fabric.SystemQosPolicy"
-#  }
-#  name = each.value.name
+#data "intersight_search_search_item" "system_qos" {
+#  for_each = { for v in [0] : v => v if length(local.system_qos) > 0 }
+#  additional_properties = jsonencode({ "ClassId" = "fabric.SystemQosPolicy' and Name in ('${
+#    trim(join("', '", local.system_qos), ", '")}') and ObjectType eq 'fabric.SystemQosPolicy"
+#  })
 #}
 #
-#data "intersight_fabric_eth_network_policy" "vlan" {
-#  for_each = {
-#    for v in local.data_policies : v.name => v if var.moids == false && v.object_type == "fabric.EthNetworkPolicy"
-#  }
-#  name = each.value.name
+#data "intersight_search_search_item" "vlan" {
+#  for_each = { for v in [0] : v => v if length(local.vlan) > 0 }
+#  additional_properties = jsonencode({ "ClassId" = "fabric.EthNetworkPolicy' and Name in ('${
+#    trim(join("', '", local.vlan), ", '")}') and ObjectType eq 'fabric.EthNetworkPolicy"
+#  })
 #}
 #
-#data "intersight_fabric_fc_network_policy" "vsan" {
-#  for_each = {
-#    for v in local.data_policies : v.name => v if var.moids == false && v.object_type == "fabric.FcNetworkPolicy"
-#  }
-#  name = each.value.name
+#data "intersight_search_search_item" "vsan" {
+#  for_each = { for v in [0] : v => v if length(local.vsan) > 0 }
+#  additional_properties = jsonencode({ "ClassId" = "fabric.FcNetworkPolicy' and Name in ('${
+#    trim(join("', '", local.vsan), ", '")}') and ObjectType eq 'fabric.FcNetworkPolicy"
+#  })
 #}
+#

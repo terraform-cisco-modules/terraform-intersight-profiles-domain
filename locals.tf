@@ -1,7 +1,7 @@
 locals {
   defaults    = var.defaults.domain
   name_prefix = var.defaults.name_prefix
-  orgs        = { for k, v in data.intersight_organization_organization.orgs.results : v.name => v.moid }
+  orgs        = var.orgs
   profiles    = var.profiles
   #policies       = var.policies
   #data_policies = var.moids == false ? {

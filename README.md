@@ -25,17 +25,18 @@ A comprehensive example using this module is available here: https://github.com/
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_model"></a> [model](#input\_model) | Model data. | `any` | n/a | yes |
-| <a name="input_moids"></a> [moids](#input\_moids) | Flag to Determine if Policies Should be associated using data object or resource. | `bool` | `false` | no |
+| <a name="input_defaults"></a> [defaults](#input\_defaults) | Map of Defaults for Intersight Profiles. | `any` | n/a | yes |
+| <a name="input_profiles"></a> [profiles](#input\_profiles) | Profiles - YAML to HCL data. | `any` | n/a | yes |
+| <a name="input_moids_policies"></a> [moids\_policies](#input\_moids\_policies) | Flag to Determine if Policies Should be associated using resource or data object. | `bool` | `false` | no |
+| <a name="input_moids_pools"></a> [moids\_pools](#input\_moids\_pools) | Flag to Determine if Pools Should be associated using data object or from var.pools. | `bool` | `false` | no |
 | <a name="input_organization"></a> [organization](#input\_organization) | Name of the default intersight Organization. | `string` | `"default"` | no |
-| <a name="input_pools"></a> [pools](#input\_pools) | Pools Moids. | `any` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | List of Key/Value Pairs to Assign as Attributes to the Policy. | `list(map(string))` | `[]` | no |
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_domains"></a> [domains](#output\_domains) | n/a |
-| <a name="output_depoy_switch_profiles"></a> [depoy\_switch\_profiles](#output\_depoy\_switch\_profiles) | n/a |
+| <a name="output_domains"></a> [domains](#output\_domains) | Moid of the Domain Cluster Profiles |
+| <a name="output_switch_profiles"></a> [switch\_profiles](#output\_switch\_profiles) | Moid and Policies of the Domain Switch Profiles |
 ## Resources
 
 | Name | Type |
