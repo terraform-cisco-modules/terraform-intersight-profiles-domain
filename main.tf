@@ -56,45 +56,24 @@ resource "intersight_fabric_switch_profile" "switch_profiles" {
     moid = intersight_fabric_switch_cluster_profile.domain_profile[each.value.domain_profile].moid
   }
   dynamic "assigned_switch" {
-    for_each = { for v in compact([each.value.serial_number]) : v => v if each.value.serial_number != "unknown" }
+    for_each = { for v in compact([each.value.serial_number]) : v => v if length(
+        regexall("^[A-Z]{3}[2-3][\\d]([0][1-9]|[1-4][0-9]|[5][0-3])[\\dA-Z]{4}$", each.value.serial_number)
+      ) > 0}
     content {
       moid = data.intersight_network_element_summary.fis[each.value.serial_number].results[0].moid
     }
   }
+  # the following policy_bucket statements map different policies to this
+  # template -- the object_type shows the policy type
   #dynamic "policy_bucket" {
   #  for_each = { for v in each.value.policy_bucket : v.object_type => v }
   #  content {
-  #    moid = length(regexall(true, var.moids)
-  #      ) > 0 ? var.policies[policy_bucket.value.policy][policy_bucket.value.name
-  #      ] : length(regexall("networkconfig.Policy", policy_bucket.value.object_type)
-  #      ) > 0 ? [for i in data.intersight_networkconfig_policy.network_connectivity[
-  #        policy_bucket.value.name
-  #      ].results : i.moid if i.organization[0].moid == local.orgs[each.value.organization]
-  #      ][0] : length(regexall("ntp.Policy", policy_bucket.value.object_type)
-  #      ) > 0 ? [for i in data.intersight_ntp_policy.ntp[policy_bucket.value.name
-  #      ].results : i.moid if i.organization[0].moid == local.orgs[each.value.organization]
-  #      ][0] : length(regexall("fabric.PortPolicy", policy_bucket.value.object_type)
-  #      ) > 0 ? [for i in data.intersight_fabric_port_policy.port[policy_bucket.value.name
-  #      ].results : i.moid if i.organization[0].moid == local.orgs[each.value.organization]
-  #      ][0] : length(regexall("snmp.Policy", policy_bucket.value.object_type)
-  #      ) > 0 ? [for i in data.intersight_snmp_policy.snmp[policy_bucket.value.name
-  #      ].results : i.moid if i.organization[0].moid == local.orgs[each.value.organization]
-  #      ][0] : length(regexall("fabric.SwitchControlPolicy", policy_bucket.value.object_type)
-  #      ) > 0 ? [for i in data.intersight_fabric_switch_control_policy.switch_control[policy_bucket.value.name
-  #      ].results : i.moid if i.organization[0].moid == local.orgs[each.value.organization]
-  #      ][0] : length(regexall("syslog.Policy", policy_bucket.value.object_type)
-  #      ) > 0 ? [for i in data.intersight_syslog_policy.syslog[policy_bucket.value.name
-  #      ].results : i.moid if i.organization[0].moid == local.orgs[each.value.organization]
-  #      ][0] : length(regexall("fabric.SystemQosPolicy", policy_bucket.value.object_type)
-  #      ) > 0 ? [for i in data.intersight_fabric_system_qos_policy.system_qos[policy_bucket.value.name
-  #      ].results : i.moid if i.organization[0].moid == local.orgs[each.value.organization]
-  #      ][0] : length(regexall("fabric.EthNetworkPolicy", policy_bucket.value.object_type)
-  #      ) > 0 ? [for i in data.intersight_fabric_eth_network_policy.vlan[policy_bucket.value.name
-  #      ].results : i.moid if i.organization[0].moid == local.orgs[each.value.organization]
-  #      ][0] : length(regexall("fabric.FcNetworkPolicy", policy_bucket.value.object_type)
-  #      ) > 0 ? [for i in data.intersight_fabric_fc_network_policy.vsan[policy_bucket.value.name
-  #      ].results : i.moid if i.organization[0].moid == local.orgs[each.value.organization]
-  #    ][0] : ""
+  #    moid = length(regexall(false, var.moids_policies)) > 0 && length(regexall(
+  #      policy_bucket.value.org, each.value.organization)) > 0 ? var.policies[policy_bucket.value.org][
+  #      policy_bucket.value.policy][policy_bucket.value.name] : [for i in local.data_search[
+  #        policy_bucket.value.policy][0].results : i.moid if jsondecode(i.additional_properties
+  #        ).Organization.Moid == local.orgs[policy_bucket.value.org] && jsondecode(i.additional_properties
+  #    ).Name == policy_bucket.value.name][0]
   #    object_type = policy_bucket.value.object_type
   #  }
   #}
