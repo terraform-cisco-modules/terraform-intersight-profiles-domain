@@ -36,10 +36,10 @@ variable "orgs" {
   type        = any
 }
 
-#variable "policies" {
-#  description = "Policies Moids."
-#  type        = any
-#}
+variable "policies" {
+  description = "Policies Moids."
+  type        = any
+}
 
 variable "tags" {
   default     = []
