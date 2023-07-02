@@ -1,9 +1,14 @@
 locals {
-  defaults    = var.defaults.domain
-  name_prefix = var.defaults.name_prefix
-  name_suffix = local.defaults.name_suffix
-  orgs        = var.orgs
-  profiles    = var.profiles
+  defaults = yamldecode(file("${path.module}/defaults.yaml"))
+  ldomain  = local.defaults.profiles.domain
+  name_prefix = [for v in [merge(lookup(local.profiles, "name_prefix", {}), local.defaults.profiles.name_prefix)] : {
+    domain = v.domain != "" ? v.domain : v.default
+  }][0]
+  name_suffix = [for v in [merge(lookup(local.profiles, "name_suffix", {}), local.defaults.profiles.name_suffix)] : {
+    domain = v.domain != "" ? v.domain : v.default
+  }][0]
+  orgs     = var.orgs
+  profiles = var.profiles
   #policies       = var.policies
   data_search = {
     network_connectivity = data.intersight_search_search_item.network_connectivity
@@ -50,9 +55,10 @@ locals {
   #_________________________________________________________________________________________
   domain = flatten([
     for v in lookup(local.profiles, "domain", []) : {
-      action      = lookup(v, "action", local.defaults.action)
+      action      = lookup(v, "action", local.ldomain.action)
       description = lookup(v, "description", "")
-      name        = "${local.name_prefix}${v.name}${local.name_suffix}"
+      key         = v.name
+      name        = "${local.name_prefix.domain}${v.name}${local.name_suffix.domain}"
       network_connectivity_policy = lookup(v, "network_connectivity_policy", "") != "" ? try(
         {
           name        = tostring(v.network_connectivity_policy)
@@ -192,7 +198,7 @@ locals {
       for s in [0, 1] : {
         action         = v.action
         description    = v.description
-        domain_profile = v.name
+        domain_profile = v.key
         name           = s == 0 ? "${v.name}-A" : "${v.name}-B"
         network_connectivity_policy = length(regexall("UNUSED", v.network_connectivity_policy.name)
         ) == 0 ? v.network_connectivity_policy.name : ""

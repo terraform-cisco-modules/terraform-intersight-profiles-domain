@@ -10,7 +10,7 @@ data "intersight_network_element_summary" "fis" {
 }
 
 resource "intersight_fabric_switch_cluster_profile" "domain_profile" {
-  for_each    = { for v in local.domain : v.name => v }
+  for_each    = { for v in local.domain : v.key => v }
   description = lookup(each.value, "description", "${each.value.name} Domain Profile.")
   name        = each.value.name
   type        = "instance"

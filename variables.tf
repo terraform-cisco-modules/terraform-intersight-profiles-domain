@@ -3,10 +3,10 @@
 # Model Data for Domain Profiles and Assigned Policies
 #__________________________________________________________________
 
-variable "defaults" {
-  description = "Map of Defaults for Intersight Profiles."
-  type        = any
-}
+#variable "defaults" {
+#  description = "Map of Defaults for Intersight Profiles."
+#  type        = any
+#}
 
 variable "profiles" {
   description = "Profiles - YAML to HCL data."

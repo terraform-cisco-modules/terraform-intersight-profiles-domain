@@ -1,0 +1,31 @@
+---
+profiles:
+  domain:
+    action: No-op
+    description: ''
+    name: '**REQUIRED**'
+    tags: # Optional List of Map of String
+      key: ''
+      value: ''
+    #===========================
+    # VLAN & VSAN Configuration
+    #===========================
+    vlan_policies: [] # It can be a list of 1 to share the same vlan policy or list of 2 for different per FI
+    vsan_policies: [] # List of two VSAN Policies.  One for each Fabric
+    #===========================
+    # Ports Configuration
+    #===========================
+    port_policies: [] # List of two Port Policies.  One for each Fabric
+    #===========================
+    # UCS Domain Configuration
+    #===========================
+    network_connectivity_policy: ''
+    ntp_policy: ''
+    snmp_policy: ''
+    syslog_policy: ''
+  name_prefix:
+    default: ''
+    domain: ''
+  name_suffix:
+    default: ''
+    domain: ''
