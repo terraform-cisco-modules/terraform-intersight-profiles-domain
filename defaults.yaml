@@ -22,7 +22,9 @@ profiles:
     network_connectivity_policy: ''
     ntp_policy: ''
     snmp_policy: ''
+    switch_control_policy: ''
     syslog_policy: ''
+    system_qos_policy: ''
   name_prefix:
     default: ''
     domain: ''
