@@ -23,7 +23,7 @@ data "intersight_search_search_item" "snmp" {
   additional_properties = jsonencode({ "ObjectType" = "snmp.Policy" })
 }
 
-data "intersight_search_search_item" "switch" {
+data "intersight_search_search_item" "switch_control" {
   for_each              = { for v in [0] : v => v if length(local.switch_control) > 0 && var.moids_policies == true }
   additional_properties = jsonencode({ "ObjectType" = "fabric.SwitchControlPolicy" })
 }
@@ -33,7 +33,7 @@ data "intersight_search_search_item" "syslog" {
   additional_properties = jsonencode({ "ObjectType" = "syslog.Policy" })
 }
 
-data "intersight_search_search_item" "system" {
+data "intersight_search_search_item" "system_qos" {
   for_each              = { for v in [0] : v => v if length(local.system_qos) > 0 && var.moids_policies == true }
   additional_properties = jsonencode({ "ObjectType" = "fabric.SystemQosPolicy" })
 }
