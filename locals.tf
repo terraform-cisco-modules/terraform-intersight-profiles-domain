@@ -15,9 +15,9 @@ locals {
     ntp                  = data.intersight_search_search_item.ntp
     port                 = data.intersight_search_search_item.port
     snmp                 = data.intersight_search_search_item.snmp
-    switch               = data.intersight_search_search_item.switch
+    switch_control       = data.intersight_search_search_item.switch_control
     syslog               = data.intersight_search_search_item.syslog
-    system               = data.intersight_search_search_item.system
+    system_qos           = data.intersight_search_search_item.system_qos
     vlan                 = data.intersight_search_search_item.vlan
     vsan                 = data.intersight_search_search_item.vsan
   }
