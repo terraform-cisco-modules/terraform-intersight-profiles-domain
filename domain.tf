@@ -9,7 +9,7 @@ data "intersight_network_element_summary" "fis" {
   serial   = each.value
 }
 
-resource "intersight_fabric_switch_cluster_profile" "domain_profile" {
+resource "intersight_fabric_switch_cluster_profile" "map" {
   for_each    = { for v in local.domain : v.key => v }
   description = lookup(each.value, "description", "${each.value.name} Domain Profile.")
   name        = each.value.name
@@ -28,10 +28,10 @@ resource "intersight_fabric_switch_cluster_profile" "domain_profile" {
 }
 
 
-resource "intersight_fabric_switch_profile" "switch_profiles" {
+resource "intersight_fabric_switch_profile" "map" {
   depends_on = [
     data.intersight_network_element_summary.fis,
-    intersight_fabric_switch_cluster_profile.domain_profile
+    intersight_fabric_switch_cluster_profile.map
   ]
   for_each = local.switch_profiles
   dynamic "assigned_switch" {
@@ -65,7 +65,7 @@ resource "intersight_fabric_switch_profile" "switch_profiles" {
     }
   }
   switch_cluster_profile {
-    moid = intersight_fabric_switch_cluster_profile.domain_profile[each.value.domain_profile].moid
+    moid = intersight_fabric_switch_cluster_profile.map[each.value.domain_profile].moid
   }
   type = "instance"
   dynamic "tags" {
