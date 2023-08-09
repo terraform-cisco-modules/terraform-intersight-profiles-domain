@@ -34,9 +34,6 @@ A Terraform module to configure Intersight Infrastructure Domain Profiles.
 |------|-------------|
 | <a name="output_domains"></a> [domains](#output\_domains) | Moid of the Domain Cluster Profiles |
 | <a name="output_switch_profiles"></a> [switch\_profiles](#output\_switch\_profiles) | Moid and Policies of the Domain Switch Profiles |
-| <a name="output_xdomain"></a> [xdomain](#output\_xdomain) | n/a |
-| <a name="output_xsw"></a> [xsw](#output\_xsw) | n/a |
-| <a name="output_xpb"></a> [xpb](#output\_xpb) | n/a |
 ## Resources
 
 | Name | Type |
