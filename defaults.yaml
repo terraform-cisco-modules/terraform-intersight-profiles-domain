@@ -19,12 +19,12 @@ profiles:
     #===========================
     # UCS Domain Configuration
     #===========================
-    network_connectivity_policy: ''
-    ntp_policy: ''
-    snmp_policy: ''
-    switch_control_policy: ''
-    syslog_policy: ''
-    system_qos_policy: ''
+    network_connectivity_policy: UNUSED
+    ntp_policy: UNUSED
+    snmp_policy: UNUSED
+    switch_control_policy: UNUSED
+    syslog_policy: UNUSED
+    system_qos_policy: UNUSED
   name_prefix:
     default: ''
     domain: ''
