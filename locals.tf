@@ -85,7 +85,7 @@ locals {
         name           = s == 0 ? "${v.name}-A" : "${v.name}-B"
         organization   = v.organization
         policy_bucket = merge({
-          for e in local.bucket.policies : local.bucket[e].policy => {
+          for e in local.bucket.policies : replace(local.bucket[e].object_type, ".", "") => {
             name        = lookup(v, e, "UNUSED")
             object_type = local.bucket[e].object_type
             org         = var.profiles.organization
