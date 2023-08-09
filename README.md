@@ -17,29 +17,26 @@ A Terraform module to configure Intersight Infrastructure Domain Profiles.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.3.0 |
-| <a name="requirement_intersight"></a> [intersight](#requirement\_intersight) | >=1.0.32 |
+| <a name="requirement_intersight"></a> [intersight](#requirement\_intersight) | >=1.0.37 |
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | >=1.0.32 |
+| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | 1.0.37 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_profiles"></a> [profiles](#input\_profiles) | Profiles - YAML to HCL data. | `any` | n/a | yes |
-| <a name="input_moids_policies"></a> [moids\_policies](#input\_moids\_policies) | Flag to Determine if Policies Should be associated using resource or data object. | `bool` | `false` | no |
-| <a name="input_moids_pools"></a> [moids\_pools](#input\_moids\_pools) | Flag to Determine if Pools Should be associated using data object or from var.pools. | `bool` | `false` | no |
-| <a name="input_organization"></a> [organization](#input\_organization) | Name of the default intersight Organization. | `string` | `"default"` | no |
-| <a name="input_orgs"></a> [orgs](#input\_orgs) | Input orgs List. | `any` | n/a | yes |
-| <a name="input_policies"></a> [policies](#input\_policies) | Policies Moids. | `any` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | List of Key/Value Pairs to Assign as Attributes to the Policy. | `list(map(string))` | `[]` | no |
+| <a name="input_profiles"></a> [profiles](#input\_profiles) | Profiles - YAML Model data. | `any` | n/a | yes |
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | <a name="output_domains"></a> [domains](#output\_domains) | Moid of the Domain Cluster Profiles |
 | <a name="output_switch_profiles"></a> [switch\_profiles](#output\_switch\_profiles) | Moid and Policies of the Domain Switch Profiles |
+| <a name="output_xdomain"></a> [xdomain](#output\_xdomain) | n/a |
+| <a name="output_xsw"></a> [xsw](#output\_xsw) | n/a |
+| <a name="output_xpb"></a> [xpb](#output\_xpb) | n/a |
 ## Resources
 
 | Name | Type |
