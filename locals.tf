@@ -101,7 +101,8 @@ locals {
               policy      = local.bucket[e].policy
             }
         })
-        serial_number = length(v.serial_numbers) == 2 ? element(v.serial_numbers, s) : element(v.serial_numbers, 0)
+        serial_number = length(lookup(v, "serial_numbers", [])) == 2 ? element(v.serial_numbers, s) : length(lookup(v, "serial_numbers", [])
+        ) == 1 ? element(v.serial_numbers, 0) : "unknown"
       })
     ]
   ]) : i.name => i }
