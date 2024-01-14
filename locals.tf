@@ -5,7 +5,10 @@ locals {
   #_________________________________________________________________________________________
 
   defaults = yamldecode(file("${path.module}/defaults.yaml"))
-  ldomain  = local.defaults.profiles.domain
+  global_settings = merge(var.global_settings, {
+    ignore_domain_serials = lookup(var.global_settings, "ignore_domain_serials", false)
+  })
+  ldomain = local.defaults.profiles.domain
   name_prefix = { for org in sort(keys(var.model)) : org => merge(
     { for e in local.profile_names : e => lookup(lookup(var.model[org], "name_prefix", local.npfx), e, local.npfx[e]) },
     { organization = org })
@@ -80,7 +83,7 @@ locals {
     for v in lookup(lookup(var.model[org], "profiles", {}), "domain", []) : merge(local.ldomain, v, {
       name         = "${local.name_prefix[org].domain}${v.name}${local.name_suffix[org].domain}"
       organization = org
-      tags         = lookup(v, "tags", var.global_settings.tags)
+      tags         = lookup(v, "tags", local.global_settings.tags)
     })
   ] if length(lookup(lookup(var.model[org], "profiles", {}), "domain", [])) > 0]) : "${d.organization}/${d.name}" => d }
   switch_profiles = { for i in flatten([
