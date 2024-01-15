@@ -81,11 +81,12 @@ locals {
   #_________________________________________________________________________________________
   domain = { for d in flatten([for org in sort(keys(var.model)) : [
     for v in lookup(lookup(var.model[org], "profiles", {}), "domain", []) : merge(local.ldomain, v, {
+      key          = v.name
       name         = "${local.name_prefix[org].domain}${v.name}${local.name_suffix[org].domain}"
       organization = org
       tags         = lookup(v, "tags", local.global_settings.tags)
     })
-  ] if length(lookup(lookup(var.model[org], "profiles", {}), "domain", [])) > 0]) : "${d.organization}/${d.name}" => d }
+  ] if length(lookup(lookup(var.model[org], "profiles", {}), "domain", [])) > 0]) : "${d.organization}/${d.key}" => d }
   switch_profiles = { for i in flatten([
     for k, v in local.domain : [
       for s in [0, 1] : merge(v, {
@@ -117,7 +118,7 @@ locals {
         ) == 1 ? element(v.serial_numbers, 0) : "unknown"
       })
     ]
-  ]) : i.name => i }
+  ]) : "${i.organization}/${i.key}" => i }
   domain_serial_numbers = compact(flatten([for v in local.switch_profiles : v.serial_number if length(regexall(
   "^[A-Z]{3}[2-3][\\d]([0][1-9]|[1-4][0-9]|[5][0-3])[\\dA-Z]{4}$", v.serial_number)) > 0]))
 }
