@@ -35,23 +35,15 @@ A Terraform module to configure Intersight Infrastructure Domain Profiles.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_data_policies"></a> [data\_policies](#output\_data\_policies) | n/a |
 | <a name="output_domains"></a> [domains](#output\_domains) | Moid of the Domain Cluster Profiles |
 | <a name="output_switch_profiles"></a> [switch\_profiles](#output\_switch\_profiles) | Moid and Policies of the Domain Switch Profiles |
-| <a name="output_z_moids_of_policies_that_were_referenced_in_the_domain_profile_but_not_already_created"></a> [z\_moids\_of\_policies\_that\_were\_referenced\_in\_the\_domain\_profile\_but\_not\_already\_created](#output\_z\_moids\_of\_policies\_that\_were\_referenced\_in\_the\_domain\_profile\_but\_not\_already\_created) | moids of Pools that were referenced in server profiles but not defined |
 ## Resources
 
 | Name | Type |
 |------|------|
-| [intersight_fabric_eth_network_policy.data](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_eth_network_policy) | resource |
-| [intersight_fabric_fc_network_policy.data](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_fc_network_policy) | resource |
-| [intersight_fabric_port_policy.data](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_port_policy) | resource |
 | [intersight_fabric_switch_cluster_profile.map](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_switch_cluster_profile) | resource |
-| [intersight_fabric_switch_control_policy.data](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_switch_control_policy) | resource |
 | [intersight_fabric_switch_profile.map](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_switch_profile) | resource |
-| [intersight_fabric_system_qos_policy.data](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_system_qos_policy) | resource |
-| [intersight_networkconfig_policy.data](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/networkconfig_policy) | resource |
-| [intersight_ntp_policy.data](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/ntp_policy) | resource |
-| [intersight_snmp_policy.data](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/snmp_policy) | resource |
-| [intersight_syslog_policy.data](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/syslog_policy) | resource |
 | [intersight_network_element_summary.fis](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/data-sources/network_element_summary) | data source |
+| [intersight_search_search_item.policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/data-sources/search_search_item) | data source |
 <!-- END_TF_DOCS -->

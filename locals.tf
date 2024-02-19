@@ -19,21 +19,10 @@ locals {
   }
   npfx          = local.defaults.profiles.name_prefix
   nsfx          = local.defaults.profiles.name_suffix
-  orgs          = var.orgs
+  org_moids     = { for k, v in var.orgs : v => k }
   policies      = lookup(var.policies, "map", {})
   profile_names = ["domain"]
 
-  data_sources = {
-    network_connectivity = { for v in sort(keys(intersight_networkconfig_policy.data)) : v => intersight_networkconfig_policy.data[v].moid }
-    ntp                  = { for v in sort(keys(intersight_ntp_policy.data)) : v => intersight_ntp_policy.data[v].moid }
-    port                 = { for v in sort(keys(intersight_fabric_port_policy.data)) : v => intersight_fabric_port_policy.data[v].moid }
-    snmp                 = { for v in sort(keys(intersight_snmp_policy.data)) : v => intersight_snmp_policy.data[v].moid }
-    switch_control       = { for v in sort(keys(intersight_fabric_switch_control_policy.data)) : v => intersight_fabric_switch_control_policy.data[v].moid }
-    syslog               = { for v in sort(keys(intersight_syslog_policy.data)) : v => intersight_syslog_policy.data[v].moid }
-    system_qos           = { for v in sort(keys(intersight_fabric_system_qos_policy.data)) : v => intersight_fabric_system_qos_policy.data[v].moid }
-    vlan                 = { for v in sort(keys(intersight_fabric_eth_network_policy.data)) : v => intersight_fabric_eth_network_policy.data[v].moid }
-    vsan                 = { for v in sort(keys(intersight_fabric_fc_network_policy.data)) : v => intersight_fabric_fc_network_policy.data[v].moid }
-  }
   pb = merge(
     { for i in local.bucket.policies : trimsuffix(i, "_policy") => setsubtract(distinct(compact(
       [for e in local.switch_profiles : [lookup(e, i, "UNUSED") != "UNUSED" ? length(regexall("/", e[i])) > 0 ? e[i] : "${e.organization}/${e[i]}" : "UNUSED"][0]]
@@ -43,6 +32,8 @@ locals {
         for d in range(length(lookup(e, i, []))) : [d != "UNUSED" ? length(regexall("/", e[i][d])) > 0 ? e[i][d] : "${e.organization}/${e[i][d]}" : "UNUSED"][0]
       ]])
   )), ["UNUSED"]) })
+  policy_types  = [for e in keys(local.pb) : e]
+  data_policies = { for e in local.policy_types : e => [for v in local.pb[e] : element(split("/", v), 1) if contains(keys(lookup(local.policies, e, {})), v) == false] }
 
   #_________________________________________________________________________________________
   #

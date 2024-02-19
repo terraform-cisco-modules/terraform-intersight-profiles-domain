@@ -15,7 +15,7 @@ resource "intersight_fabric_switch_cluster_profile" "map" {
   name        = each.value.name
   type        = "instance"
   organization {
-    moid        = local.orgs[each.value.organization]
+    moid        = var.orgs[each.value.organization]
     object_type = "organization.Organization"
   }
   dynamic "tags" {
@@ -55,9 +55,11 @@ resource "intersight_fabric_switch_profile" "map" {
   dynamic "policy_bucket" {
     for_each = { for k, v in each.value.policy_bucket : v.object_type => v }
     content {
-      moid = contains(lookup(lookup(local.policies, "locals", {}), policy_bucket.value.policy, []), "${policy_bucket.value.org}/${policy_bucket.value.name}"
+      moid = contains(keys(lookup(local.policies, policy_bucket.value.policy, {})), "${policy_bucket.value.org}/${policy_bucket.value.name}"
         ) == true ? local.policies[policy_bucket.value.policy]["${policy_bucket.value.org}/${policy_bucket.value.name}"
-      ] : local.data_sources[policy_bucket.value.policy]["${policy_bucket.value.org}/${policy_bucket.value.name}"]
+        ] : [for i in data.intersight_search_search_item.policies[policy_bucket.value.policy
+          ].results : i.moid if jsondecode(i.additional_properties).Name == policy_bucket.value.name && jsondecode(i.additional_properties
+      ).Organization.Moid == var.orgs[policy_bucket.value.org]][0]
       object_type = policy_bucket.value.object_type
     }
   }
