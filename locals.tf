@@ -25,15 +25,18 @@ locals {
 
   pb = merge(
     { for i in local.bucket.policies : trimsuffix(i, "_policy") => setsubtract(distinct(compact(
-      [for e in local.switch_profiles : [lookup(e, i, "UNUSED") != "UNUSED" ? length(regexall("/", e[i])) > 0 ? e[i] : "${e.organization}/${e[i]}" : "UNUSED"][0]]
+      [for e in local.switch_profiles : [lookup(e, i, "UNUSED") != "UNUSED" ? length(regexall("/", e[i])
+      ) > 0 ? e[i] : "${e.organization}/${e[i]}" : "UNUSED"][0]]
     )), ["UNUSED"]) },
     { for i in local.bucket.dual_policies : trimsuffix(i, "_policies") => setsubtract(distinct(compact(
       flatten([for e in local.switch_profiles : [
-        for d in range(length(lookup(e, i, []))) : [d != "UNUSED" ? length(regexall("/", e[i][d])) > 0 ? e[i][d] : "${e.organization}/${e[i][d]}" : "UNUSED"][0]
+        for d in range(length(lookup(e, i, []))) : [d != "UNUSED" ? length(regexall("/", e[i][d])) > 0 ? e[i][d
+        ] : "${e.organization}/${e[i][d]}" : "UNUSED"][0]
       ]])
   )), ["UNUSED"]) })
-  policy_types  = [for e in keys(local.pb) : e]
-  data_policies = { for e in local.policy_types : e => [for v in local.pb[e] : element(split("/", v), 1) if contains(keys(lookup(local.policies, e, {})), v) == false] }
+  policy_types = [for e in keys(local.pb) : e]
+  data_policies = { for e in local.policy_types : e => [for v in local.pb[e] : element(split("/", v), 1
+  ) if contains(keys(lookup(local.policies, e, {})), v) == false] }
 
   #_________________________________________________________________________________________
   #
@@ -112,4 +115,5 @@ locals {
   ]) : "${i.organization}/${i.name}" => i }
   domain_serial_numbers = compact(flatten([for v in local.switch_profiles : v.serial_number if length(regexall(
   "^[A-Z]{3}[2-3][\\d]([0][1-9]|[1-4][0-9]|[5][0-3])[\\dA-Z]{4}$", v.serial_number)) > 0]))
+  wait_for_domain = distinct(compact([for i in local.switch_profiles : i.action if i.action != "No-op"]))
 }

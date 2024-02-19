@@ -43,10 +43,10 @@ resource "intersight_fabric_switch_profile" "map" {
   description = lookup(each.value, "description", "${each.value.name} Switch Profile.")
   lifecycle {
     ignore_changes = [
-      action,
+      #action,
       additional_properties,
       mod_time,
-      wait_for_completion
+      #wait_for_completion
     ]
   }
   name = each.value.name
@@ -63,9 +63,7 @@ resource "intersight_fabric_switch_profile" "map" {
       object_type = policy_bucket.value.object_type
     }
   }
-  switch_cluster_profile {
-    moid = intersight_fabric_switch_cluster_profile.map[each.value.domain_profile].moid
-  }
+  switch_cluster_profile { moid = intersight_fabric_switch_cluster_profile.map[each.value.domain_profile].moid }
   type = "instance"
   dynamic "tags" {
     for_each = each.value.tags
@@ -74,4 +72,48 @@ resource "intersight_fabric_switch_profile" "map" {
       value = tags.value.value
     }
   }
+}
+
+#_________________________________________________________________________________________
+#
+# Sleep Timer between Deploying the Domain and Waiting for Server Discovery
+#_________________________________________________________________________________________
+resource "time_sleep" "domain" {
+  depends_on      = [intersight_fabric_switch_profile.map]
+  for_each        = { for v in ["wait_for_validation"] : v => v if length(local.switch_profiles) > 0 }
+  create_duration = length([for k, v in local.switch_profiles : 1 if v.action == "Deploy"]) > 0 ? "3m" : "1s"
+  triggers        = { always_run = length(local.wait_for_domain) > 0 ? timestamp() : 1 }
+}
+
+#_________________________________________________________________________________________
+#
+# Intersight: UCS Domain Profiles
+# GUI Location: Infrastructure Service > Configure > Profiles : UCS Domain Profiles
+#_________________________________________________________________________________________
+resource "intersight_fabric_switch_profile" "deploy" {
+  depends_on = [intersight_fabric_switch_profile.map]
+  for_each   = { for k, v in local.switch_profiles : k => v }
+  action = length(regexall("^[A-Z]{3}[2-3][\\d]([0][1-9]|[1-4][0-9]|[5][0-3])[\\dA-Z]{4}$", each.value.serial_number)
+  ) > 0 ? each.value.action : "No-op"
+  lifecycle {
+    ignore_changes = [
+      action_params, ancestors, assigned_switch, create_time, description, domain_group_moid, mod_time, owners, parent,
+      permission_resources, policy_bucket, running_workflows, shared_scope, src_template, tags, version_context
+    ]
+  }
+  name = each.value.name
+  switch_cluster_profile { moid = each.value.domain_moid }
+  wait_for_completion = local.switch_profiles[element(keys(local.switch_profiles), length(keys(local.switch_profiles)) - 1)
+  ].name == each.value.name ? true : false
+}
+
+#_________________________________________________________________________________________
+#
+# Sleep Timer between Deploying the Domain and Waiting for Server Discovery
+#_________________________________________________________________________________________
+resource "time_sleep" "domain_deploy" {
+  depends_on      = [intersight_fabric_switch_profile.deploy]
+  for_each        = { for v in ["wait_for_server_discovery"] : v => v if length(local.switch_profiles) > 0 }
+  create_duration = length([for k, v in local.switch_profiles : 1 if v.action == "Deploy"]) > 0 ? "30m" : "1s"
+  triggers        = { always_run = length(local.wait_for_domain) > 0 ? timestamp() : 1 }
 }

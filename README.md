@@ -18,11 +18,13 @@ A Terraform module to configure Intersight Infrastructure Domain Profiles.
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.3.0 |
 | <a name="requirement_intersight"></a> [intersight](#requirement\_intersight) | >=1.0.37 |
+| <a name="requirement_time"></a> [time](#requirement\_time) | >=0.9.1 |
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_intersight"></a> [intersight](#provider\_intersight) | 1.0.44 |
+| <a name="provider_time"></a> [time](#provider\_time) | 0.10.0 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -44,6 +46,7 @@ A Terraform module to configure Intersight Infrastructure Domain Profiles.
 |------|------|
 | [intersight_fabric_switch_cluster_profile.map](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_switch_cluster_profile) | resource |
 | [intersight_fabric_switch_profile.map](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_switch_profile) | resource |
+| [time_sleep.map](https://registry.terraform.io/providers/time/latest/docs/resources/sleep) | resource |
 | [intersight_network_element_summary.fis](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/data-sources/network_element_summary) | data source |
 | [intersight_search_search_item.policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/data-sources/search_search_item) | data source |
 <!-- END_TF_DOCS -->
